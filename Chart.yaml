@@ -1,23 +1,19 @@
 apiVersion: v2
+appVersion: 0.0.1
 name: vsphere-csi
 description: A Helm chart for Kubernetes
-
-# A chart can be either an 'application' or a 'library' chart.
-#
-# Application charts are a collection of templates that can be packaged into versioned archives
-# to be deployed.
-#
-# Library charts provide useful utilities or functions for the chart developer. They're included as
-# a dependency of application charts to inject those utilities and functions into the rendering
-# pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
-
-# This is the chart version. This version number should be incremented each time you make changes
-# to the chart and its templates, including the app version.
-# Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 2.0.0
-
-# This is the version number of the application being deployed. This version number should be
-# incremented each time you make changes to the application. Versions are not expected to
-# follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 1.16.0
+keywords:
+  - vsphere
+  - vmware
+  - csi
+home: https://github.com/kubernetes/vsphere-csi-driver
+icon: https://github.com/kubernetes-sigs/vsphere-csi-driver/blob/master/docs/images/vmware_logo.png
+sources:
+  - https://github.com/kubernetes/vsphere-csi-driver
+maintainers:
+  - name: chogan
+    email: chogan@vmware.com
+  - name: Myles Gray
+    email: mylesg@vmware.com
