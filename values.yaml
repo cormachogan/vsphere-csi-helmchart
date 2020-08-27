@@ -13,7 +13,15 @@ config:
   clusterId: "cluster"
   port: 443
   cafile: "ca"
-  datacenters: "dc"
+  datacenters: "Datacenter"
+  datastores: "vSANdatastore"
+
+netconfig:
+  enabled: false
+  create: true
+  ips: "*"
+  permissions: "READ_WRITE"
+  rootsquash: true
 
 serviceAccount:
   enabled: true
