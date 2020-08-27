@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This chart deploys all components required to run the vSphere CSI as described on it's [GitHub page](https://github.com/kubernetes/vsphere-csi-driver).
+This chart deploys all components required to run the vSphere CSI as described on it's [GitHub page](https://vsphere-csi-driver.sigs.k8s.io/).
 
 ## Prerequisites
 

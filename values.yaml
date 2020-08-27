@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 config:
-  enabled: true
+  enabled: false
   create: true
   name: "vsphere-config-secret"
   namespace: "kube-system"
