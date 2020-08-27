@@ -28,7 +28,7 @@ $ helm install vsphere-csi stable/vsphere-csi --namespace kube-system --set conf
 
 > **Tip**: List all releases using `helm list --all`
 
-If you want to provide your own `vsphere.conf` and Kubernetes secret `vsphere-csi` (for example, to handle multple datacenters/vCenters or for using zones), you can learn more about the `vsphere.conf` and `vsphere-csi` secret by reading the following [documentation](https://cloud-provider-vsphere.sigs.k8s.io/tutorials/kubernetes-on-vsphere-with-kubeadm.html) and then running the following command:
+If you want to provide your own `csi-vsphere.conf` and Kubernetes secret `vsphere-config-secret` (for example, to handle multple datacenters/vCenters or for using zones), you can learn more about the `csi-vsphere.conf` and `vsphere-csi` secret by reading the following [documentation](https://vsphere-csi-driver.sigs.k8s.io/driver-deployment/installation.html) and then running the following command:
 
 ```bash
 $ helm install vsphere-csi stable/vsphere-csi --namespace kube-system

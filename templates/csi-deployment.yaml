@@ -2,8 +2,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vsphere-csi-controller
-  namespace: kube-system
+  name: {{ .Values.csideployment.name }}
+  namespace: {{ .Values.csideployment.namespace }}
   labels:
     {{- include "vsphere-csi.labels" . | nindent 4 }}
 spec:
@@ -17,7 +17,7 @@ spec:
         app: vsphere-csi-controller
         role: vsphere-csi
     spec:
-      serviceAccountName: vsphere-csi-controller
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       nodeSelector:
         node-role.kubernetes.io/master: ""
       tolerations:
