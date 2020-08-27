@@ -15,7 +15,7 @@ config:
   cafile: "ca"
   datacenters: "Datacenter"
   datastores: "vSANdatastore"
-
+  
 netconfig:
   enabled: false
   create: true
