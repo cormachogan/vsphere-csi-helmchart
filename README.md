@@ -9,7 +9,7 @@ This chart deploys all components required to run the vSphere CSI as described o
 ## Prerequisites
 
 - Has been tested on Kubernetes v1.18.3
-- This Helm chart assumes that your Kubernetes cluster has not been configured to use the external vSphere CPI cloud provider. It has a dependency on the vSphere CPI cloud provider and will automatically deploy is as part of the CSI deployment. For further information on the vSphere CPI driver, please refer to the following: [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/#running-cloud-controller-manager).
+- This Helm chart assumes that your Kubernetes cluster has not been configured to use the external vSphere CPI cloud provider. The vSphere CSI driver has a dependency on the vSphere CPI cloud provider and this Helm chart will automatically deploy is as part of the CSI deployment. For further information on the vSphere CPI driver, please refer to the following documentation: [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/#running-cloud-controller-manager).
 
 ## Testing the Helm Chart
 
@@ -26,30 +26,71 @@ helm install --dry-run  --debug vsphere-csi .
 To install this chart for block based PVs, you will need to provide additional vCenter information/credentials. Run the following command (but replace the placeholder values with the ones for your environment):
 
 ```bash
-helm install vsphere-csi . --namespace kube-system --set config.enabled=true --set config.vcenter=<vCenter IP> --set config.username=<vCenter Username> --set config.password=<vCenter Password> --set config.datacenter=<vCenter Datacenter> --set config.clusterId='changeme' --set vsphere-cpi.config.enabled=true --set vsphere-cpi.config.vcenter=<vCenter IP> --set vsphere-cpi.config.username=<vCenter Username> --set vsphere-cpi.config.password=<vCenter Password> --set vsphere-cpi.config.datacenter=<vCenter Datacenter>
+helm install vsphere-csi .
+--set config.enabled=true
+--set config.vcenter=<vCenter IP>
+--set config.username=<vCenter Username>
+--set config.password=<vCenter Password>
+--set config.datacenter=<vCenter Datacenter>
+--set config.clusterId='changeme'
+--set vsphere-cpi.config.enabled=true
+--set vsphere-cpi.config.vcenter=<vCenter IP>
+--set vsphere-cpi.config.username=<vCenter Username>
+--set vsphere-cpi.config.password=<vCenter Password>
+--set vsphere-cpi.config.datacenter=<vCenter Datacenter>
 ```
 
-A full example can be seen here:
+A full example can be seen here. If you need to make changes to any of the configuration options (other than the secret), you can use the `upgrade --install` option shown here. If you need to change the secret, you will have to delete and reinstall the chart.
+
+> **Caution**: The clusterId is a unique identifier for the Kubernetes cluster, chosen at the time the helm chart is installed. The same clusterId should not be used for different Kubernetes clusters managed by the same vCenter Server.
 
 ```bash
-helm upgrade --install vsphere-csi . --namespace kube-system --set config.enabled=true --set config.vcenter='vcsa-01.rainpole.com' --set config.password='VMware123' --set config.datacenter='Datacenter' --set netconfig.enabled=true --set netconfig.ips='*' --set netconfig.permissions='READ_WRITE' --set netconfig.rootsquash=true --set netconfig.datastore='ds:///vmfs/volumes/vsan:52e2cfb57ce8d5d3-c12e042893ff2f76/' --set config.clusterId='MyCluster1' --set vsphere-cpi.config.enabled=true --set vsphere-cpi.config.vcenter='vcsa-01.rainpole.com' --set vsphere-cpi.config.password='VMware123' --set vsphere-cpi.config.datacenter='Datacenter'
+helm upgrade --install vsphere-csi .
+--set config.enabled=true
+--set config.vcenter='vcsa-01.rainpole.com'
+--set config.password='VMware123'
+--set config.datacenter='Datacenter'
+--set netconfig.enabled=true
+--set config.clusterId='MyCluster1'
+--set vsphere-cpi.config.enabled=true
+--set vsphere-cpi.config.vcenter='vcsa-01.rainpole.com'
+--set vsphere-cpi.config.password='VMware123'
+--set vsphere-cpi.config.datacenter='Datacenter'
 ```
 
 > **Tip**: List all releases using `helm list --all`
 
-If you want to provide your own `csi-vsphere.conf` and Kubernetes secret `vsphere-config-secret` (for example, to handle multple datacenters/vCenters or for using zones), you can learn more about the `csi-vsphere.conf` and `vsphere-csi` secret by reading the following [documentation](https://vsphere-csi-driver.sigs.k8s.io/driver-deployment/installation.html).
-
 ## Installing the Helm Chart for Block and File based Persistent Volumes
 
-To install this helm chart for both block and file PVs, the chart includes a `netconfig` parameter set to support CSI file shares. This allows vSAN File Shares to be used as read-write-many Persistent Volumes. To enable a certain IP address range to access the file shares, set specific file share permissions or control the rootsquash parameter, run the following command:
+To install this helm chart for both block and file PVs, the chart includes a `netconfig` parameter set to support CSI file shares. This allows vSAN File Shares to be used as read-write-many Persistent Volumes. To enable a certain IP address range to access the file shares, select the datastore where file shares can be created, set specific file share permissions and control the root squash parameter, run the following command:
 
 ```bash
-helm install stable/vsphere-csi --name vsphere-csi --namespace kube-system --set config.enabled=true --set config.vcenter=<vCenter IP> --set config.username=<vCenter Username> --set config.password=<vCenter Password> --set config.datacenter=<vCenter Datacenter> --set netconfig.enabled=true --set netconfig.ips="*" --set netconfig.permissions="READ_WRITE" --set netconfig.rootsquash="true"
+helm upgrade --install vsphere-csi .
+--set config.enabled=true
+--set config.vcenter='vcsa-01.rainpole.com'
+--set config.password='VMware123'
+--set config.datacenter='Datacenter'
+--set netconfig.enabled=true
+--set netconfig.ips='*'
+--set netconfig.permissions='READ_WRITE'
+--set netconfig.rootsquash=true
+--set netconfig.datastore='ds:///vmfs/volumes/vsan:52e2cfb57ce8d5d3-c12e042893ff2f76/'
+--set config.clusterId='MyCluster1'
+--set vsphere-cpi.config.enabled=true
+--set vsphere-cpi.config.vcenter='vcsa-01.rainpole.com'
+--set vsphere-cpi.config.password='VMware123'
+--set vsphere-cpi.config.datacenter='Datacenter'
 ```
 
-## Uninstalling the Chart
+The datastore URL entry above may be found in the vSphere client of the vCenter Server managing the Kubernetes Cluster. Select the Datastores view, then the vSAN datastore that supports vSAN File Services. In the Summary view, the URL will be displayed.
 
-To uninstall/delete the `vsphere-csi` deployment:
+## Manually installing the vSphere CSI driver
+
+If you want to provide your own `csi-vsphere.conf`, for example, to handle multple datacenters/vCenters or for using zones, you can learn how to manually deploy the CSI driver by reading the following [documentation](https://vsphere-csi-driver.sigs.k8s.io/driver-deployment/installation.html).
+
+## Uninstalling the vSphere CSI Helm Chart
+
+To uninstall/delete the `vsphere-csi` deployment via Helm:
 
 ```bash
 helm delete vsphere-csi --namespace kube-system
