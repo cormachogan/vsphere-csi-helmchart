@@ -11,14 +11,22 @@ This chart deploys all components required to run the vSphere CSI as described o
 - Has been tested on Kubernetes v1.18.3
 - This Helm chart assumes that your Kubernetes cluster has not been configured to use the external vSphere CPI cloud provider. The vSphere CSI driver has a dependency on the vSphere CPI cloud provider and this Helm chart will automatically deploy is as part of the CSI deployment. For further information on the vSphere CPI driver, please refer to the following documentation: [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/#running-cloud-controller-manager).
 
+## Adding this helm repository
+
+To add the helm repository for the vSphere CSI driver, run the following commands:
+
+```bash
+helm repo add cormachogan https://cormachogan.github.io/vsphere-csi-helmchart
+helm repo update
+```
+
 ## Testing the Helm Chart
 
 To test the helm chart before installing it , the following commands can be run:
 
 ```bash
-cd vsphere-csi-helmchart/
-helm template --debug vsphere-csi .
-helm install --dry-run  --debug vsphere-csi .
+helm template --debug vsphere-csi cormachogan/vsphere-csi
+helm install --dry-run  --debug vsphere-csi cormachogan/vsphere-csi
 ```
 
 ## Installing the Helm Chart for Block based Persistent Volumes
@@ -26,7 +34,8 @@ helm install --dry-run  --debug vsphere-csi .
 To install this chart for block based PVs, you will need to provide additional vCenter information/credentials. Run the following command (but replace the placeholder values with the ones for your environment):
 
 ```bash
-helm install vsphere-csi .
+helm install vsphere-csi cormachogan/vsphere-csi
+--namespace kube-system
 --set config.enabled=true
 --set config.vcenter=<vCenter IP>
 --set config.username=<vCenter Username>
@@ -45,7 +54,8 @@ A full example can be seen here. If you need to make changes to any of the confi
 > **Caution**: The clusterId is a unique identifier for the Kubernetes cluster, chosen at the time the helm chart is installed. The same clusterId should not be used for different Kubernetes clusters managed by the same vCenter Server.
 
 ```bash
-helm upgrade --install vsphere-csi .
+helm upgrade --install vsphere-csi cormachogan/vsphere-csi
+--namespace kube-system
 --set config.enabled=true
 --set config.vcenter='vcsa-01.rainpole.com'
 --set config.password='VMware123'
@@ -65,7 +75,8 @@ helm upgrade --install vsphere-csi .
 To install this helm chart for both block and file PVs, the chart includes a `netconfig` parameter set to support CSI file shares. This allows vSAN File Shares to be used as read-write-many Persistent Volumes. To enable a certain IP address range to access the file shares, select the datastore where file shares can be created, set specific file share permissions and control the root squash parameter, run the following command:
 
 ```bash
-helm upgrade --install vsphere-csi .
+helm upgrade --install vsphere-csi cormachogan/vsphere-csi
+--namespace kube-system
 --set config.enabled=true
 --set config.vcenter='vcsa-01.rainpole.com'
 --set config.password='VMware123'
