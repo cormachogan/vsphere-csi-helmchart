@@ -1,20 +1,26 @@
 # Default values for vsphere-csi.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+vsphere-cpi:
+  config:
+    enabled: true
+    vcenter: "vcenter.local"
+    username: "administrator@vsphere.local"
+    password: "pass"
+    datacenter: "datacenter"
 
 config:
-  enabled: false
+  enabled: true
   create: true
   name: "vsphere-config-secret"
   namespace: "kube-system"
   vcenter: "vcenter.local"
-  username: "user"
+  username: "administrator@vsphere.local"
   password: "pass"
   clusterId: "cluster"
   port: 443
   cafile: "ca"
-  datacenters: "datacenter"
-  datastores: "datastore"
+  datacenter: "datacenter"
   
 netconfig:
   enabled: false
@@ -22,6 +28,7 @@ netconfig:
   ips: "*"
   permissions: "READ_WRITE"
   rootsquash: true
+  datastore: "datastore"
 
 serviceAccount:
   enabled: true

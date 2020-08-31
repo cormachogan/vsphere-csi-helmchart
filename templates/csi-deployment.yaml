@@ -17,7 +17,7 @@ spec:
         app: vsphere-csi-controller
         role: vsphere-csi
     spec:
-      serviceAccountName: {{ .Values.serviceAccount.name }}
+      serviceAccountName: vsphere-csi-controller
       nodeSelector:
         node-role.kubernetes.io/master: ""
       tolerations:

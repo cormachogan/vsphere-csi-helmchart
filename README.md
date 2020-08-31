@@ -18,14 +18,21 @@ In Helm 3.0+, there is an effort to move the charts repo into a [distributed mod
 To test the helm chart before installing, the following commands can be run:
 
 ```bash
-helm template --debug vsphere-csi stable/vsphere-csi --values vsphere-csi/values.yaml
-helm install --dry-run  --debug vsphere-csi stable/vsphere-csi --values vsphere-csi/values.yaml
+cd vsphere-csi-helmchart/
+helm template --debug vsphere-csi .
+helm install --dry-run  --debug vsphere-csi .
 ```
 
-Then to install this chart and by providing vCenter information/credentials, run the following command:
+Then to install this chart and by providing vCenter information/credentials, run the following command (replacing the placeholder values with the ones for your environment):
 
 ```bash
-helm install vsphere-csi stable/vsphere-csi --namespace kube-system --set config.enabled=true --set config.vcenter=<vCenter IP> --set config.username=<vCenter Username> --set config.password=<vCenter Password> --set config.datacenter=<vCenter Datacenter>
+helm install vsphere-csi . --namespace kube-system --set config.enabled=true --set config.vcenter=<vCenter IP> --set config.username=<vCenter Username> --set config.password=<vCenter Password> --set config.datacenter=<vCenter Datacenter> --set config.clusterId='changeme' --set vsphere-cpi.config.enabled=true --set vsphere-cpi.config.vcenter=<vCenter IP> --set vsphere-cpi.config.username=<vCenter Username> --set vsphere-cpi.config.password=<vCenter Password> --set vsphere-cpi.config.datacenter=<vCenter Datacenter>
+```
+
+An example can be seen here:
+
+```bash
+helm upgrade --install vsphere-csi . --namespace kube-system --set config.enabled=true --set config.vcenter='10.27.51.106' --set config.password='VMware123!' --set config.datacenter='Datacenter' --set netconfig.enabled=true --set netconfig.ips="*" --set netconfig.permissions="READ_WRITE" --set netconfig.rootsquash=true --set netconfig.datastore='ds:///vmfs/volumes/vsan:52e2cfb57ce8d5d3-c12e042893ff2f76/' --set config.clusterId='MyCluster1' --set vsphere-cpi.config.enabled=true --set vsphere-cpi.config.vcenter='10.27.51.106' --set vsphere-cpi.config.password='VMware123!' --set vsphere-cpi.config.datacenter='Datacenter'
 ```
 
 > **Tip**: List all releases using `helm list --all`
