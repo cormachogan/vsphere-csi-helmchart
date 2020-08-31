@@ -2,8 +2,8 @@
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-  name: {{ .Values.csidaemonset.name }}
-  namespace: {{ .Values.csidaemonset.namespace }}
+  name: vsphere-csi-node
+  namespace: kube-system
 spec:
   selector:
     matchLabels:

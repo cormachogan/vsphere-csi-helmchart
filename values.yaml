@@ -13,8 +13,8 @@ config:
   clusterId: "cluster"
   port: 443
   cafile: "ca"
-  datacenters: "Datacenter"
-  datastores: "vSANdatastore"
+  datacenters: "datacenter"
+  datastores: "datastore"
   
 netconfig:
   enabled: false
@@ -26,35 +26,26 @@ netconfig:
 serviceAccount:
   enabled: true
   create: true
-  name: "vsphere-csi-controller"
-  namespace: "kube-system"
 
 clusterRole:
   enabled: true
   create: true
-  name: "vsphere-csi-controller-role"
 
 clusterRoleBinding: 
   enabled: true
   create: true
-  name: "vsphere-csi-controller-binding"
 
 csideployment:
   enabled: true
   create: true
-  name: "vsphere-csi-controller"
-  namespace: "kube-system"
 
 csidriver:
   enabled: true
   create: true
-  name: "csi.vsphere.vmware.com"
 
 csidaemonset:
   enabled: true
   create: true
-  name: "vsphere-csi-node"
-  namespace: "kube-system"
 
 podAnnotations: {}
 

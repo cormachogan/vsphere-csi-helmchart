@@ -2,8 +2,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.csideployment.name }}
-  namespace: {{ .Values.csideployment.namespace }}
+  name: vsphere-csi-controller
+  namespace: kube-system
   labels:
     {{- include "vsphere-csi.labels" . | nindent 4 }}
 spec:
