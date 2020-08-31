@@ -13,12 +13,7 @@ This chart deploys all components required to run the vSphere CSI as described o
 
 ## Installing the Chart using Helm 3.0+
 
-In Helm 3.0+, the stable charts repo isn't enabled by default because there is an effort to move the charts repo into a [distributed model](https://github.com/helm/hub/blob/master/Repositories.md). To enable the [stable charts](https://github.com/helm/charts/tree/master/stable), you can run the following command:
-
-```bash
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-$ helm repo update
-```
+In Helm 3.0+, there is an effort to move the charts repo into a [distributed model](https://github.com/helm/hub/blob/master/Repositories.md).
 
 To test the helm chart before installing, the following commands can be run:
 
@@ -53,6 +48,14 @@ If you provide your own `vsphere.conf` and Kubernetes secret `vsphere-csi`, then
 
 ```bash
 helm install stable/vsphere-csi --name vsphere-csi --namespace kube-system
+```
+
+## About CSI File Based Persistent Volumes
+
+This helm chart includes a single netconfig to support CSI file shares. This will allow vSAN File Shares to be used as read-write-many Persistent Volumes. To enable a certain IP address range to access the file shares, set specific file share permissions or control the rootsquash parameter, run the following command:
+
+```bash
+helm install stable/vsphere-csi --name vsphere-csi --namespace kube-system --set config.enabled=true --set config.vcenter=<vCenter IP> --set config.username=<vCenter Username> --set config.password=<vCenter Password> --set config.datacenter=<vCenter Datacenter> --set netconfig.enabled=true --set netconfig.ips="*" --set netconfig.permissions="READ_WRITE" --set netconfig.rootsquash="true"
 ```
 
 ## Uninstalling the Chart
