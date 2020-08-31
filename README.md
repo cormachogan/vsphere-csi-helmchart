@@ -1,6 +1,6 @@
 # vSphere Container Storage Interface (CSI)
 
-[vSphere Container Storage Interface](https://github.com/kubernetes-sigs/vsphere-csi-driver) handles storage specific functionality for Kubernetes running on VMware vSphere infrastructure. 
+[vSphere Container Storage Interface](https://github.com/kubernetes-sigs/vsphere-csi-driver) handles storage specific functionality for Kubernetes running on VMware vSphere infrastructure.
 
 ## Introduction
 
