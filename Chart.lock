@@ -1,6 +1,0 @@
-dependencies:
-- name: vsphere-cpi
-  repository: https://kubernetes-charts.storage.googleapis.com
-  version: 0.1.3
-digest: sha256:08cbad6edab844b81e8939afe290a07e1d15c206d7643255e9d4e00d253bcbb0
-generated: "2020-08-31T13:38:49.481377+01:00"
