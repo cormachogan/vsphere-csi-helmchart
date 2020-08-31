@@ -1,0 +1,86 @@
+# Default values for vsphere-csi.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+vsphere-cpi:
+  config:
+    enabled: true
+    vcenter: "vcenter.local"
+    username: "administrator@vsphere.local"
+    password: "pass"
+    datacenter: "datacenter"
+
+config:
+  enabled: true
+  create: true
+  name: "vsphere-config-secret"
+  namespace: "kube-system"
+  vcenter: "vcenter.local"
+  username: "administrator@vsphere.local"
+  password: "pass"
+  clusterId: "cluster"
+  port: 443
+  cafile: "ca"
+  datacenter: "datacenter"
+  
+netconfig:
+  enabled: false
+  create: true
+  ips: "*"
+  permissions: "READ_WRITE"
+  rootsquash: true
+  datastore: "datastore"
+
+serviceAccount:
+  enabled: true
+  create: true
+
+clusterRole:
+  enabled: true
+  create: true
+
+clusterRoleBinding: 
+  enabled: true
+  create: true
+
+csideployment:
+  enabled: true
+  create: true
+
+csidriver:
+  enabled: true
+  create: true
+
+csidaemonset:
+  enabled: true
+  create: true
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

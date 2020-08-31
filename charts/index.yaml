@@ -1,0 +1,31 @@
+apiVersion: v1
+entries:
+  vsphere-csi:
+  - apiVersion: v2
+    appVersion: 2.0.0
+    created: "2020-08-31T15:29:50.409364+01:00"
+    dependencies:
+    - enabled: true
+      name: vsphere-cpi
+      repository: https://kubernetes-charts.storage.googleapis.com
+      version: 0.1.3
+    description: A Helm chart for vSphere CSI Driver
+    digest: d31596f7d60dcee3223ab4a1d1c87018a7dc01718777dc349261994729805989
+    home: https://github.com/kubernetes-sigs/vsphere-csi-driver
+    icon: https://github.com/kubernetes-sigs/vsphere-csi-driver/blob/master/docs/images/vmware_logo.png
+    keywords:
+    - vsphere
+    - vmware
+    - csi
+    maintainers:
+    - email: chogan@vmware.com
+      name: chogan
+    - email: mylesg@vmware.com
+      name: Myles Gray
+    name: vsphere-csi
+    sources:
+    - https://github.com/kubernetes-sigs/vsphere-csi-driver
+    urls:
+    - https://github.com/cormachogan/vsphere-csi-helmchart/vsphere-csi-0.0.2.tgz
+    version: 0.0.2
+generated: "2020-08-31T15:29:50.40774+01:00"
