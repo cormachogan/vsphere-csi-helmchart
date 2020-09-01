@@ -83,7 +83,7 @@ helm upgrade --install vsphere-csi cormachogan/vsphere-csi
 --set config.vcenter=vcsa-01.rainpole.com \
 --set config.password=VMware123 \
 --set config.datacenter=Datacenter \
---set config.clusterId=MyCluster1\ 
+--set config.clusterId=MyCluster1\
 --set vsphere-cpi.config.enabled=true \
 --set vsphere-cpi.config.vcenter=vcsa-01.rainpole.com \
 --set vsphere-cpi.config.password=VMware123 \
