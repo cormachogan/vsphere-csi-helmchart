@@ -34,19 +34,20 @@ helm install --dry-run  --debug vsphere-csi cormachogan/vsphere-csi
 To install this chart for block based PVs, you will need to provide additional vCenter information/credentials. Run the following command (but replace the placeholder values with the ones for your environment):
 
 ```bash
-helm install vsphere-csi cormachogan/vsphere-csi
---namespace kube-system
---set config.enabled=true
---set config.vcenter=<vCenter IP>
---set config.username=<vCenter Username>
---set config.password=<vCenter Password>
---set config.datacenter=<vCenter Datacenter>
---set config.clusterId='changeme'
---set vsphere-cpi.config.enabled=true
---set vsphere-cpi.config.vcenter=<vCenter IP>
---set vsphere-cpi.config.username=<vCenter Username>
---set vsphere-cpi.config.password=<vCenter Password>
---set vsphere-cpi.config.datacenter=<vCenter Datacenter>
+helm install vsphere-csi cormachogan/vsphere-csi \
+--namespace kube-system \
+--set config.enabled=true \
+--set config.vcenter=<vCenter IP> \
+--set config.username=<vCenter Username> \
+--set config.password=<vCenter Password> \
+--set config.datacenter=<vCenter Datacenter> \
+--set config.clusterId='changeme' \
+--set vsphere-cpi.config.enabled=true \
+--set vsphere-cpi.config.vcenter=<vCenter IP> \
+--set vsphere-cpi.config.username=<vCenter Username> \
+--set vsphere-cpi.config.password=<vCenter Password> \
+--set vsphere-cpi.config.datacenter=<vCenter Datacenter> \
+--set netconfig.enabled=false
 ```
 
 A full example can be seen here. If you need to make changes to any of the configuration options (other than the secret), you can use the `upgrade --install` option shown here. If you need to change the secret, you will have to delete and reinstall the chart.
@@ -55,17 +56,18 @@ A full example can be seen here. If you need to make changes to any of the confi
 
 ```bash
 helm upgrade --install vsphere-csi cormachogan/vsphere-csi
---namespace kube-system
---set config.enabled=true
---set config.vcenter='vcsa-01.rainpole.com'
---set config.password='VMware123'
---set config.datacenter='Datacenter'
---set netconfig.enabled=true
---set config.clusterId='MyCluster1'
---set vsphere-cpi.config.enabled=true
---set vsphere-cpi.config.vcenter='vcsa-01.rainpole.com'
---set vsphere-cpi.config.password='VMware123'
---set vsphere-cpi.config.datacenter='Datacenter'
+--namespace kube-system \
+--set config.enabled=true \
+--set config.vcenter=vcsa-01.rainpole.com \
+--set config.password=VMware123 \
+--set config.datacenter=Datacenter \
+--set netconfig.enabled=true \
+--set config.clusterId=MyCluster1 \
+--set vsphere-cpi.config.enabled=true \
+--set vsphere-cpi.config.vcenter=vcsa-01.rainpole.com \
+--set vsphere-cpi.config.password=VMware123 \
+--set vsphere-cpi.config.datacenter=Datacenter \
+--set netconfig.enabled=false
 ```
 
 > **Tip**: List all releases using `helm list --all`
@@ -76,21 +78,21 @@ To install this helm chart for both block and file PVs, the chart includes a `ne
 
 ```bash
 helm upgrade --install vsphere-csi cormachogan/vsphere-csi
---namespace kube-system
---set config.enabled=true
---set config.vcenter='vcsa-01.rainpole.com'
---set config.password='VMware123'
---set config.datacenter='Datacenter'
---set netconfig.enabled=true
---set netconfig.ips='*'
---set netconfig.permissions='READ_WRITE'
+--namespace kube-system \
+--set config.enabled=true \
+--set config.vcenter=vcsa-01.rainpole.com \
+--set config.password=VMware123 \
+--set config.datacenter=Datacenter \
+--set config.clusterId=MyCluster1\ 
+--set vsphere-cpi.config.enabled=true \
+--set vsphere-cpi.config.vcenter=vcsa-01.rainpole.com \
+--set vsphere-cpi.config.password=VMware123 \
+--set vsphere-cpi.config.datacenter=Datacenter \
+--set netconfig.enabled=true \
+--set netconfig.datastore=ds:///vmfs/volumes/vsan:52e2cfb57ce8d5d3-c12e042893ff2f76/ \
+--set netconfig.ips='*' \
+--set netconfig.permissions=READ_WRITE \
 --set netconfig.rootsquash=true
---set netconfig.datastore='ds:///vmfs/volumes/vsan:52e2cfb57ce8d5d3-c12e042893ff2f76/'
---set config.clusterId='MyCluster1'
---set vsphere-cpi.config.enabled=true
---set vsphere-cpi.config.vcenter='vcsa-01.rainpole.com'
---set vsphere-cpi.config.password='VMware123'
---set vsphere-cpi.config.datacenter='Datacenter'
 ```
 
 The datastore URL entry above may be found in the vSphere client of the vCenter Server managing the Kubernetes Cluster. Select the Datastores view, then the vSAN datastore that supports vSAN File Services. In the Summary view, the URL will be displayed.
