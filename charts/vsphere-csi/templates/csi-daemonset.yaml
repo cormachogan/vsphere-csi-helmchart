@@ -124,4 +124,8 @@ spec:
           operator: Exists
         - effect: NoSchedule
           operator: Exists
+  {{- with .Values.csidaemonset.nodeSelector | default .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
 {{- end -}}
