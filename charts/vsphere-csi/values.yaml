@@ -25,11 +25,11 @@ config:
   enabled: true
   create: true
   name: "vsphere-config-secret"
-  namespace: "kube-system"
+  namespace: kube-system
   clusterId: "cluster"
   port: 443
   cafile: "ca"
-  
+
 netconfig:
   enabled: false
   create: true
@@ -46,7 +46,7 @@ clusterRole:
   enabled: true
   create: true
 
-clusterRoleBinding: 
+clusterRoleBinding:
   enabled: true
   create: true
 
