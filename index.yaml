@@ -27,5 +27,5 @@ entries:
     - https://github.com/kubernetes-sigs/vsphere-csi-driver
     urls:
     - https://github.com/cormachogan/vsphere-csi-helmchart/releases/download/0.0.3/vsphere-csi-0.0.3.tgz
-    version: 0.0.2
+    version: 0.0.3
 generated: "2020-08-31T15:29:50.40774+01:00"

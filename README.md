@@ -47,6 +47,7 @@ helm install vsphere-csi cormachogan/vsphere-csi \
 --set vsphere-cpi.config.username=<vCenter Username> \
 --set vsphere-cpi.config.password=<vCenter Password> \
 --set vsphere-cpi.config.datacenter=<vCenter Datacenter> \
+--set vsphere-cpi.namespace=<target-namespace> \
 --set netconfig.enabled=false
 ```
 
@@ -66,6 +67,7 @@ helm upgrade --install vsphere-csi cormachogan/vsphere-csi
 --set vsphere-cpi.config.vcenter=vcsa-01.rainpole.com \
 --set vsphere-cpi.config.password=VMware123 \
 --set vsphere-cpi.config.datacenter=Datacenter \
+--set vsphere-cpi.namespace=kube-system \
 --set netconfig.enabled=false
 ```
 
@@ -87,6 +89,7 @@ helm upgrade --install vsphere-csi cormachogan/vsphere-csi
 --set vsphere-cpi.config.vcenter=vcsa-01.rainpole.com \
 --set vsphere-cpi.config.password=VMware123 \
 --set vsphere-cpi.config.datacenter=Datacenter \
+--set vsphere-cpi.namespace=kube-system \
 --set netconfig.enabled=true \
 --set netconfig.datastore=ds:///vmfs/volumes/vsan:52e2cfb57ce8d5d3-c12e042893ff2f76/ \
 --set netconfig.ips='*' \

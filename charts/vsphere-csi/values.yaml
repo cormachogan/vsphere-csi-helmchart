@@ -20,6 +20,7 @@ global:
     username: "administrator@vsphere.local"
     password: "pass"
     datacenter: "datacenter"
+    namespace: kube-system
 
 config:
   enabled: true
