@@ -20,13 +20,11 @@ global:
     username: "administrator@vsphere.local"
     password: "pass"
     datacenter: "datacenter"
-    namespace: kube-system
 
 config:
   enabled: true
   create: true
   name: "vsphere-config-secret"
-  namespace: kube-system
   clusterId: "cluster"
   port: 443
   cafile: "ca"

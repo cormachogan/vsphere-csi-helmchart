@@ -5,9 +5,9 @@ you should observe that there is one instance of the vsphere-csi-controller
 running on the master node and that an instance of the vsphere-csi-node is
 running on each of the worker nodes.
 
-$ kubectl get deployment --namespace={{ .Values.config.namespace }}
+$ kubectl get deployment --namespace={{ .Release.Namespace }}
 
-$ kubectl get daemonsets vsphere-csi-node --namespace={{ .Values.config.namespace }}
+$ kubectl get daemonsets vsphere-csi-node --namespace={{ .Release.Namespace }}
 
 
 # Verify that the vSphere CSI driver has been registered with Kubernetes #

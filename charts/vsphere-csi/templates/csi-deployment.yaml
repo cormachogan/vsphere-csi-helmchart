@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vsphere-csi-controller
-  namespace: {{ .Values.config.namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "vsphere-csi.labels" . | nindent 4 }}
 spec:
