@@ -3,32 +3,34 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vsphere-csi-controller
-  namespace: {{ .Values.config.namespace }}
   labels:
     {{- include "vsphere-csi.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: vsphere-csi-controller
+      {{- include "vsphere-csi.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
       labels:
-        app: vsphere-csi-controller
-        role: vsphere-csi
+        {{- include "vsphere-csi.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: vsphere-csi-controller
-      nodeSelector:
-        node-role.kubernetes.io/master: ""
-      tolerations:
-        - operator: "Exists"
-          effect: NoSchedule
-        - operator: "Exists"
-          effect: NoExecute
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "vsphere-csi.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       dnsPolicy: "Default"
       containers:
         - name: csi-attacher
-          image: quay.io/k8scsi/csi-attacher:v2.0.0
+          image: "{{ .Values.csiAttacher.image.repository }}:{{ .Values.csiAttacher.image.tag }}"
+          imagePullPolicy: {{ .Values.csiAttacher.image.pullPolicy }}
           args:
             - "--v=4"
             - "--timeout=300s"
@@ -40,8 +42,10 @@ spec:
           volumeMounts:
             - mountPath: /csi
               name: socket-dir
+        {{- if .Values.csiResizer.enabled }}
         - name: csi-resizer
-          image: quay.io/k8scsi/csi-resizer:v0.3.0
+          image: "{{ .Values.csiResizer.image.repository }}:{{ .Values.csiResizer.image.tag  }}"
+          imagePullPolicy: {{ .Values.csiResizer.image.pullPolicy }}
           args:
             - "--v=4"
             - "--csiTimeout=300s"
@@ -53,8 +57,10 @@ spec:
           volumeMounts:
             - mountPath: /csi
               name: socket-dir
+        {{- end }}
         - name: vsphere-csi-controller
-          image: gcr.io/cloud-provider-vsphere/csi/release/driver:v2.0.0
+          image: "{{ .Values.csiController.image.repository }}:{{ .Values.csiController.image.tag }}"
+          imagePullPolicy: {{ .Values.csiController.image.pullPolicy }}
           lifecycle:
             preStop:
               exec:
@@ -88,7 +94,8 @@ spec:
             periodSeconds: 5
             failureThreshold: 3
         - name: liveness-probe
-          image: quay.io/k8scsi/livenessprobe:v1.1.0
+          image: "{{ .Values.livenessProbe.image.repository }}:{{ .Values.livenessProbe.image.tag }}"
+          imagePullPolicy: {{ .Values.livenessProbe.image.pullPolicy }}
           args:
             - "--csi-address=$(ADDRESS)"
           env:
@@ -98,7 +105,8 @@ spec:
             - mountPath: /var/lib/csi/sockets/pluginproxy/
               name: socket-dir
         - name: vsphere-syncer
-          image: gcr.io/cloud-provider-vsphere/csi/release/syncer:v2.0.0
+          image: "{{ .Values.vsphereSyncer.image.repository }}:{{ .Values.vsphereSyncer.image.tag }}"
+          imagePullPolicy: {{ .Values.vsphereSyncer.image.pullPolicy }}
           args:
             - "--leader-election"
           imagePullPolicy: "Always"
@@ -114,7 +122,8 @@ spec:
               name: vsphere-config-volume
               readOnly: true
         - name: csi-provisioner
-          image: quay.io/k8scsi/csi-provisioner:v1.4.0
+          image: "{{ .Values.csiProvisioner.image.repository }}:{{ .Values.csiProvisioner.image.tag }}"
+          imagePullPolicy: {{ .Values.csiProvisioner.image.pullPolicy }}
           args:
             - "--v=4"
             - "--timeout=300s"
@@ -137,4 +146,21 @@ spec:
         hostPath:
           path: /var/lib/csi/sockets/pluginproxy/csi.vsphere.vmware.com
           type: DirectoryOrCreate
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+        {{- with .Values.csideployment.nodeSelector | default .Values.nodeSelector }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.csideployment.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      tolerations:
+        - operator: "Exists"
+          effect: NoSchedule
+        - operator: "Exists"
+          effect: NoExecute
+        {{- with .Values.csideployment.tolerations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
 {{- end -}}
