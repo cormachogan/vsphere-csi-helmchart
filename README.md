@@ -99,6 +99,14 @@ helm upgrade --install vsphere-csi cormachogan/vsphere-csi
 
 The datastore URL entry above may be found in the vSphere client of the vCenter Server managing the Kubernetes Cluster. Select the Datastores view, then the vSAN datastore that supports vSAN File Services. In the Summary view, the URL will be displayed.
 
+## Still on vSphere 6.7U3 (csi-resizer crashing)
+
+If you are still on vSphere 6.7U3, you will need to use `--set csiResizer.enabled=false` to disable the csi-resizer container, which requires vSphere 7.0 or newer.
+
+## Override image source (air gapped)
+
+If your Kubernetes clusters are in a network that is firewalled from the Internet, and need to override the image sources to something internal, please see the values.yaml.
+
 ## Manually installing the vSphere CSI driver
 
 If you want to provide your own `csi-vsphere.conf`, for example, to handle multple datacenters/vCenters or for using zones, you can learn how to manually deploy the CSI driver by reading the following [documentation](https://vsphere-csi-driver.sigs.k8s.io/driver-deployment/installation.html).
