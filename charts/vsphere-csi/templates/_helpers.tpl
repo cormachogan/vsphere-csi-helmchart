@@ -1,3 +1,4 @@
+{{/* vim: set filetype=mustache: */}}
 {{/*
 Expand the name of the chart.
 */}}
@@ -48,4 +49,15 @@ Selector labels
 {{- define "vsphere-csi.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "vsphere-csi.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "vsphere-csi.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "vsphere-csi.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
 {{- end }}
