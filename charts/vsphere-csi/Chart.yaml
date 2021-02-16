@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: 2.0.0
 name: vsphere-csi
-description: A Helm chart for vSphere CSI Driver
+description: DEPRECATED - See https://vsphere-tmm.github.io/helm-charts/
 version: 0.0.3
 keywords:
   - vsphere
